@@ -1,61 +1,90 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
-import {assets} from '../../assets/assets';
+import { assets } from '../../assets/assets';
 import "./MyOrders.css";
 
-
 const MyOrders = () => {
-    const {token} = useContext(StoreContext);
-    const [data, setData] = useState([]);
+  const { token } = useContext(StoreContext);
+  const [data, setData] = useState([]);
 
-    const fetchOrders = async () => {
-        const response = await axios.get("http://localhost:8080/api/orders", {headers: {"Authorization": `Bearer ${token}`}});
-        setData(response.data);
-    };
+  const fetchOrders = async () => {
+    const response = await axios.get("http://localhost:8080/api/orders", {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    setData(response.data);
+  };
 
-    useEffect(() => {
-        if (token) {
-            fetchOrders();
-        }
-    }, [token]);
+  useEffect(() => {
+    if (token) {
+      fetchOrders();
+    }
+  }, [token]);
 
   return (
-    <div className="container">
-        <div className="py-5 row justify-content-center">
-            <div className="col-11 card">
-                <table className="table table-responsive">
-                    <tbody>
-                        {
-                            data.map((order, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>
-                                            <img src={assets.parcelguy} alt="" height={48} width={48}/>
-                                        </td>
-                                        <td>{order.orderedItems.map((item, index) => {
-                                            if (index === order.orderedItems.length - 1) {
-                                                return item.name + " x "+item.quantity;
-                                            } else {
-                                                return item.name + " x "+item.quantity+", ";
-                                            }
-                                        })}</td>
-                                        <td>&#x20B9;{order.amount.toFixed(2)}</td>
-                                        <td>Items: {order.orderedItems.length}</td>
-                                        <td className="fw-bold text-capitalize">&#x25cf;{order.orderStatus}</td>
-                                        <td>
-                                            <button className="btn btn-sm btn-warning" onClick={fetchOrders}>
-                                                <i className="bi bi-arrow-clockwise"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div className="myorders-wrapper">
+      <div className="myorders-header">
+        <div className="myorders-header-left">
+          <h2>My Orders</h2>
+          <p>{data.length} {data.length === 1 ? 'order' : 'orders'} placed</p>
         </div>
+        <button className="refresh-btn" onClick={fetchOrders}>
+          <i className="bi bi-arrow-clockwise"></i>
+          Refresh
+        </button>
+      </div>
+
+      <div className="myorders-list">
+        {data.length === 0 && (
+          <div className="myorders-empty">No orders yet.</div>
+        )}
+
+        {data.map((order, index) => {
+          const status = order.orderStatus;
+          const statusClass =
+            status === 'Pending'          ? 'status-pending' :
+            status === 'Out for Delivery' ? 'status-out'     :
+                                            'status-delivered';
+
+          const itemsLabel = order.orderedItems
+            .map((item, i) =>
+              i === order.orderedItems.length - 1
+                ? `${item.name} x${item.quantity}`
+                : `${item.name} x${item.quantity}, `
+            )
+            .join('');
+
+          return (
+            <div className="myorder-card" key={index}>
+
+              {/* Icon */}
+              <div className="myorder-icon">
+                <img src={assets.parcelguy} alt="order" />
+              </div>
+
+              {/* Items + price + count */}
+              <div className="myorder-info">
+                <div className="myorder-items" title={itemsLabel}>
+                  {itemsLabel}
+                </div>
+                <div className="myorder-meta-row">
+                  <span className="myorder-price">₹{order.amount.toFixed(2)}</span>
+                  <span className="myorder-count">
+                    {order.orderedItems.length} {order.orderedItems.length === 1 ? 'item' : 'items'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Status badge */}
+              <div className={`myorder-status ${statusClass}`}>
+                <span className="status-dot" />
+                {order.orderStatus}
+              </div>
+
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

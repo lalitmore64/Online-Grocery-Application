@@ -1,3 +1,234 @@
-.table td {
-    vertical-align: middle;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Wrapper ── */
+.myorders-wrapper {
+  font-family: 'DM Sans', sans-serif;
+  background: #f5f5f2;
+  min-height: 100vh;
+  padding: 48px 32px;
+}
+
+/* ── Page Header ── */
+.myorders-header {
+  max-width: 980px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.myorders-header h2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #111;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.myorders-header p {
+  font-size: 14px;
+  color: #999;
+  margin: 6px 0 0;
+}
+
+.myorders-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Refresh Button ── */
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  background: #fff;
+  border: 1.5px solid #e0e0dc;
+  border-radius: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.refresh-btn:hover {
+  background: #f5f5f2;
+  border-color: #ccc;
+  color: #111;
+}
+
+.refresh-btn i {
+  font-size: 14px;
+}
+
+/* ── Cards List ── */
+.myorders-list {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Single Order Card ── */
+.myorder-card {
+  background: #fff;
+  border: 1px solid #e6e6e2;
+  border-radius: 16px;
+  padding: 26px 30px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto auto;
+  align-items: center;
+  gap: 24px;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.myorder-card:hover {
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.08);
+  border-color: #d8d8d4;
+}
+
+/* ── Icon Box ── */
+.myorder-icon {
+  width: 56px;
+  height: 56px;
+  background: #f2f2ee;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.myorder-icon img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.75;
+}
+
+/* ── Info ── */
+.myorder-info {
+  min-width: 0;
+}
+
+.myorder-items {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.myorder-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.myorder-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  letter-spacing: -0.3px;
+}
+
+.myorder-count {
+  font-size: 12px;
+  color: #aaa;
+  background: #f2f2ee;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── Status Badge ── */
+.myorder-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  text-transform: capitalize;
+  flex-shrink: 0;
+  letter-spacing: 0.1px;
+}
+
+.myorder-status .status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Pending */
+.myorder-status.status-pending {
+  background: #fff8ec;
+  color: #b45309;
+  border-color: #f6d28a;
+}
+.myorder-status.status-pending .status-dot {
+  background: #f59e0b;
+}
+
+/* Out for Delivery */
+.myorder-status.status-out {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #93c5fd;
+}
+.myorder-status.status-out .status-dot {
+  background: #3b82f6;
+}
+
+/* Delivered */
+.myorder-status.status-delivered {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #86efac;
+}
+.myorder-status.status-delivered .status-dot {
+  background: #22c55e;
+}
+
+/* ── Empty State ── */
+.myorders-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: #bbb;
+  font-size: 15px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .myorders-wrapper {
+    padding: 28px 16px;
+  }
+
+  .myorder-card {
+    grid-template-columns: 48px 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .myorder-status {
+    grid-column: 1 / -1;
+  }
+
+  .myorders-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 }
